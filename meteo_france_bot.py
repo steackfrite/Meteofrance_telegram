@@ -17,6 +17,14 @@ def echo(update: Update, context: CallbackContext):
     context.bot.send_message(chat_id=update.effective_chat.id, text=message_01)
     context.bot.send_message(chat_id=update.effective_chat.id, text=message_02)
 
+
+
+def unknown(update: Update, context: CallbackContext):
+    message_01 = 'Désolé, je n\'ai pas compris cette commande'
+    message_02 = 'Taper /help pour voir la liste des commandes possibles'
+    context.bot.send_message(chat_id=update.effective_chat.id, text=message_01)
+    context.bot.send_message(chat_id=update.effective_chat.id, text=message_02)
+
 def main():
     # Variables
     token: str = ''
@@ -33,15 +41,18 @@ def main():
     ## Listening to commands ##
     start_handler = CommandHandler('start', start)
     echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)
+    unknown_handler = MessageHandler(Filters.command, unknown)
     ## Listening to commands ##
 
     ## Add command to the dispatcher ##
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(echo_handler)
+    dispatcher.add_handler(unknown_handler)
     ## Add command to the dispatcher ##
 
     # Launch the bot!
     updater.start_polling()
+    updater.idle()
 
 if __name__ == '__main__':
     main()
