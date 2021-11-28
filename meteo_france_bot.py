@@ -8,15 +8,18 @@ from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler, Filters
 from telegram.ext import Updater
 
+import meteo_france.py
+
 def start(update: Update, context: CallbackContext):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Let's rock 'n roll!")
 
-def echo(update: Update, context: CallbackContext):
     message_01 = 'Envoyez-moi une commande et non pas un message !' # souligner commande
+    def echo(update: Update, context: CallbackContext):
     message_02 = 'Taper /help pour voir la liste des commandes possibles' # souligner /help
     context.bot.send_message(chat_id=update.effective_chat.id, text=message_01)
     context.bot.send_message(chat_id=update.effective_chat.id, text=message_02)
 
+def meteo(update: Update, context: CallbackContext):
 
 
 def unknown(update: Update, context: CallbackContext):
