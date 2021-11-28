@@ -65,7 +65,37 @@ def get_forecast(city, meteo, forecast_choice):
 
 
 def main():
-    
+    # Variables
+    cities = []
+    city_search = ''
+    city_choice = 0
+    city_user = ''
+    forecast_choice = False
+
+    # Initialisation de la classe meteofrance
+    meteo = meteofrance_api.MeteoFranceClient()
+
+    # Gestion des arguments de l'utilisateur
+    if len(sys.argv) == 3:
+        city_search = sys.argv[1]
+    elif len(sys.argv) == 4:
+        city_search = sys.argv[1]
+        city_choice = int(sys.argv[3])
+    else:
+        print(f'Utilisation : python meteo-france.py "ville" "jour ou heure" "choix de la ville (optionel)"')
+        print(f'Exemple : python meteo-france.py lyon jour 0')
+        sys.exit(-1)
+
+    if 'jour' not in sys.argv[2] and 'heure' not in sys.argv[2] and 'semaine' not in sys.argv[2]:
+        print(f'Utilisation : python meteo-france.py "ville" "jour, heure ou semaine" "choix de la ville (optionel)"')
+        print(f'Exemple : python meteo-france.py lyon jour 0')
+        sys.exit(-1)
+    else:
+        forecast_choice = sys.argv[2]
+
+    cities = search_city(city_search, meteo)
+    city_user = cities[city_choice]
+    get_forecast(city_user, meteo, forecast_choice)
 
 
 
