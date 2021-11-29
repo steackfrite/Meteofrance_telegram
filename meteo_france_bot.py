@@ -78,11 +78,11 @@ def meteo(update: Update, context: CallbackContext):
         temp = 'Température :\n' + \
         '   * Min : ' + str(my_forecast.today_forecast["T"]["min"]) + '°C\n' +\
         '   * Max : ' + str(my_forecast.today_forecast["T"]["max"]) + '°C\n'
-        humidity = 'Humidité :\n' + \
+        humidity = '\nHumidité :\n' + \
         '   * Min : ' + str(my_forecast.today_forecast["humidity"]["min"]) + '°C\n' +\
         '   * Max : ' + str(my_forecast.today_forecast["humidity"]["max"]) + '°C\n'
 
-        sky = 'Ciel : ' + my_forecast.today_forecast["weather12H"]["desc"]
+        sky = '\nCiel : ' + my_forecast.today_forecast["weather12H"]["desc"]
         message = temp + humidity + sky
         context.bot.send_message(chat_id=update.effective_chat.id, text=message)
     else:
@@ -92,7 +92,7 @@ def meteo(update: Update, context: CallbackContext):
                 current_day = 'Jour ' + str(i) + ' :'
                 rain = '\nPluie : ' + day["rain"]["3h"] + '%'
                 freeze = '\nVerglas : '+ day["freezing"] + '%'
-                snow = '\nNeige : ' + day["snow"]["3h"] + '%'
+                snow = '\nNeige : ' + day["snow"]["3h"] + '%\n'
                 i += 1
 
                 message = current_day + rain + freeze + snow
