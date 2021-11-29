@@ -105,7 +105,7 @@ def meteo(update: Update, context: CallbackContext):
                     freeze = '\nVerglas : 0%\n'
                 i += 1
 
-                message += current_day + rain + freeze + snow
+                message += current_day + rain + snow + freeze
         context.bot.send_message(chat_id=update.effective_chat.id, text=message)
 
     ## Get and print forecast ##
