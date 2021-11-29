@@ -87,18 +87,27 @@ def meteo(update: Update, context: CallbackContext):
         context.bot.send_message(chat_id=update.effective_chat.id, text=message)
     else:
         i = 0
+        message = ''
         for day in my_forecast.probability_forecast:
             if i < 7 :
                 current_day = 'Jour ' + str(i) + ' :'
-                rain = '\nPluie : ' + day["rain"]["3h"] + '%'
-                freeze = '\nVerglas : '+ day["freezing"] + '%'
-                snow = '\nNeige : ' + day["snow"]["3h"] + '%\n'
+                if day["rain"]["3h"]:
+                    rain = '\nPluie : ' + str(day["rain"]["3h"]) + '%'
+                else:
+                    rain = '\nPluie : 0%'
+                if day["snow"]["3h"]:
+                    snow = '\nNeige : ' + str(day["snow"]["3h"]) + '%\n'
+                else:
+                    snow = '\nNeige : 0%\n'
+                if day["freezing"]:
+                    freeze = '\nVerglas : '+ str(day["freezing"]) + '%'
+                else:
+                    freeze = '\nVerglas : 0%\n'
                 i += 1
 
-                message = current_day + rain + freeze + snow
-                context.bot.send_message(chat_id=update.effective_chat.id, text=message)
-            else:
-                return 0
+                message += current_day + rain + freeze + snow
+        context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+
     ## Get and print forecast ##
 
 
