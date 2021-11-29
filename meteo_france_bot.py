@@ -28,7 +28,7 @@ def meteo(update: Update, context: CallbackContext):
     error_01 = 'Utilisation : python meteo-france.py "ville" "jour ou heure" "choix de la ville (optionel)"'
     error_02 = 'Exemple : python meteo-france.py lyon jour 0'
     error = False
-    i: str = ''
+    i: int = 0
     user_cities: str = ''
 
     # Gestion des arguments de l'utilisateur
@@ -55,7 +55,7 @@ def meteo(update: Update, context: CallbackContext):
     ## Search and print city search ##
     cities = meteofrance_class.search_city(city_search)
     for city in cities:
-        user_cities += '[' + i+ ']' + str(city) + '\n'
+        user_cities += '[' + str(i) + '] - ' + str(city) + '\n'
         i += 1
 
     context.bot.send_message(chat_id=update.effective_chat.id, text=str(user_cities))
