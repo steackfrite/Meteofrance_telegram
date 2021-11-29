@@ -75,13 +75,12 @@ def meteo(update: Update, context: CallbackContext):
         message = temp + ressentie + humidity + rain + snow + sky
         context.bot.send_message(chat_id=update.effective_chat.id, text=message)
     elif 'jour' in forecast_choice:
-        context.bot.send_message(chat_id=update.effective_chat.id, text=message)
         temp = 'Température :\n' + \
-        ' * Min : ' + str(my_forecast.today_forecast["T"]["min"]) + '°C\n' +\
-        ' * Max : ' + str(my_forecast.today_forecast["T"]["max"]) + '°C\n'
+        '   * Min : ' + str(my_forecast.today_forecast["T"]["min"]) + '°C\n' +\
+        '   * Max : ' + str(my_forecast.today_forecast["T"]["max"]) + '°C\n'
         humidity = 'Humidité :\n' + \
-        ' * Min : ' + str(my_forecast.today_forecast["humidity"]["min"]) + '°C\n' +\
-        ' * Max : ' + str(my_forecast.today_forecast["humidity"]["max"]) + '°C\n'
+        '   * Min : ' + str(my_forecast.today_forecast["humidity"]["min"]) + '°C\n' +\
+        '   * Max : ' + str(my_forecast.today_forecast["humidity"]["max"]) + '°C\n'
 
         sky = 'Ciel : ' + my_forecast.today_forecast["weather12H"]["desc"]
         message = temp + humidity + sky
