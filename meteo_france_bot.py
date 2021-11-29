@@ -96,13 +96,13 @@ def meteo(update: Update, context: CallbackContext):
                 else:
                     rain = '\nPluie : 0%'
                 if day["snow"]["3h"]:
-                    snow = '\nNeige : ' + str(day["snow"]["3h"]) + '%\n'
+                    snow = '\nNeige : ' + str(day["snow"]["3h"]) + '%'
                 else:
-                    snow = '\nNeige : 0%\n'
+                    snow = '\nNeige : 0%'
                 if day["freezing"]:
-                    freeze = '\nVerglas : '+ str(day["freezing"]) + '%'
+                    freeze = '\nVerglas : '+ str(day["freezing"]) + '%\n\n'
                 else:
-                    freeze = '\nVerglas : 0%\n'
+                    freeze = '\nVerglas : 0%\n\n'
                 i += 1
 
                 message += current_day + rain + snow + freeze
