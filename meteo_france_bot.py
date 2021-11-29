@@ -28,6 +28,8 @@ def meteo(update: Update, context: CallbackContext):
     error_01 = 'Utilisation : python meteo-france.py "ville" "jour ou heure" "choix de la ville (optionel)"'
     error_02 = 'Exemple : python meteo-france.py lyon jour 0'
     error = False
+    i: str = ''
+    user_cities: str = ''
 
     # Gestion des arguments de l'utilisateur
     if len(context.args) == 2:
@@ -50,9 +52,57 @@ def meteo(update: Update, context: CallbackContext):
         error = True
         return 0
 
-    cities = meteofrance_class.search_city(city_search, meteo)
+    ## Search and print city search ##
+    cities = meteofrance_class.search_city(city_search)
+    for city in cities:
+        user_cities += '[' + i+ ']' + str(city) + '\n'
+        i += 1
+
+    context.bot.send_message(chat_id=update.effective_chat.id, text=str(user_cities))
+    ## Search and print city search ##
+
+    ## Get and print forecast ##
     city_user = cities[city_choice]
-    meteofrance_class.get_forecast(city_user, meteo, forecast_choice)
+    my_forecast = meteofrance_class.get_forecast(city_user, forecast_choice)
+
+    if 'heure' in forecast_choice:
+        temp = 'Température : ' + str(my_forecast.current_forecast["T"]["value"]) + '°C'
+        ressentie = '\nRessentie : ' + str(my_forecast.current_forecast["T"]["windchill"]) + '°C'
+        humidity = '\nHumidité : ' + str(my_forecast.current_forecast["humidity"]) + '%'
+        rain = '\nRisque de pluie : ' + str(my_forecast.current_forecast["rain"]["1h"]) + '%'
+        snow = '\nRique de neige : ' + str(my_forecast.current_forecast["snow"]["1h"]) + '%'
+        sky = '\nCiel : ' + my_forecast.current_forecast["weather"]["desc"]
+        message = temp + ressentie + humidity + rain + snow + sky
+        context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+    elif 'jour' in forecast_choice:
+        context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+        temp = 'Température :\n' + \
+        ' * Min : ' + str(my_forecast.today_forecast["T"]["min"]) + '°C\n' +\
+        ' * Max : ' + str(my_forecast.today_forecast["T"]["max"]) + '°C\n'
+        humidity = 'Humidité :\n' + \
+        ' * Min : ' + str(my_forecast.today_forecast["humidity"]["min"]) + '°C\n' +\
+        ' * Max : ' + str(my_forecast.today_forecast["humidity"]["max"]) + '°C\n'
+
+        sky = 'Ciel : ' + my_forecast.today_forecast["weather12H"]["desc"]
+        message = temp + humidity + sky
+        context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+    else:
+        i = 0
+        for day in my_forecast.probability_forecast:
+            if i < 7 :
+                current_day = 'Jour ' + str(i) + ' :'
+                rain = '\nPluie : ' + day["rain"]["3h"] + '%'
+                freeze = '\nVerglas : '+ day["freezing"] + '%'
+                snow = '\nNeige : ' + day["snow"]["3h"] + '%'
+                i += 1
+
+                message = current_day + rain + freeze + snow
+                context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+            else:
+                return 0
+    ## Get and print forecast ##
+
+
 
 def unknown(update: Update, context: CallbackContext):
     message_01 = 'Désolé, je n\'ai pas compris cette commande'
@@ -89,7 +139,7 @@ def main():
 
     # Launch the bot!
     updater.start_polling()
-    updater.idle()
+    # updater.idle()
 
 if __name__ == '__main__':
     main()
