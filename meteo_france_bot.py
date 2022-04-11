@@ -130,9 +130,10 @@ def alert(update: Update, context: CallbackContext):
 
     ## Get and print alerts
     my_alert = meteofrance_class.get_alert(departement)
-    message = str(my_alert)
-
-    context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+    for alert in my_alert["text_bloc_item"]:
+        for description in alert["text"]:
+            message = description
+            context.bot.send_message(chat_id=update.effective_chat.id, text=message)
 
 def unknown(update: Update, context: CallbackContext):
     message_01 = 'Désolé, je n\'ai pas compris cette commande'
@@ -173,7 +174,6 @@ def main():
     updater.start_polling()
     # updater.idle()
 
-## TODO get_warning_current_phenomenoms
 
 
 if __name__ == '__main__':
