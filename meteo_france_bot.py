@@ -25,8 +25,8 @@ def echo(update: Update, context: CallbackContext):
     context.bot.send_message(chat_id=update.effective_chat.id, text=message_02)
 
 def meteo(update: Update, context: CallbackContext):
-    error_01 = 'Utilisation : python meteo-france.py "ville" "jour ou heure" "choix de la ville (optionel)"'
-    error_02 = 'Exemple : python meteo-france.py lyon jour 0'
+    error_01 = 'Utilisation : /meteo "ville" "jour ou heure" "choix de la ville (optionel)"'
+    error_02 = 'Exemple : /meteo lyon jour 0'
     error = False
     i: int = 0
     user_cities: str = ''
@@ -71,8 +71,11 @@ def meteo(update: Update, context: CallbackContext):
         humidity = '\nHumidité : ' + str(my_forecast.current_forecast["humidity"]) + '%'
         rain = '\nRisque de pluie : ' + str(my_forecast.current_forecast["rain"]["1h"]) + '%'
         snow = '\nRique de neige : ' + str(my_forecast.current_forecast["snow"]["1h"]) + '%'
+        wind = '\nVent : \n' + \
+        '   * Vitesse : ' + str(my_forecast.current_forecast["wind"]["speed"]) + '\n' + \
+        '   * Direction : ' + str(my_forecast.current_forecast["wind"]["icon"]) + '\n'
         sky = '\nCiel : ' + my_forecast.current_forecast["weather"]["desc"]
-        message = temp + ressentie + humidity + rain + snow + sky
+        message = temp + ressentie + humidity + rain + snow + wind + sky
         context.bot.send_message(chat_id=update.effective_chat.id, text=message)
     elif 'jour' in forecast_choice:
         temp = 'Température :\n' + \
@@ -109,7 +112,6 @@ def meteo(update: Update, context: CallbackContext):
         context.bot.send_message(chat_id=update.effective_chat.id, text=message)
 
     ## Get and print forecast ##
-
 
 
 def unknown(update: Update, context: CallbackContext):
@@ -150,6 +152,7 @@ def main():
     # updater.idle()
 
 ## TODO get_warning_current_phenomenoms
+
 
 if __name__ == '__main__':
     main()
