@@ -113,6 +113,26 @@ def meteo(update: Update, context: CallbackContext):
 
     ## Get and print forecast ##
 
+def alert(update: Update, context: CallbackContext):
+    # Variables
+    departement: str = '00'
+    error_01: str = 'Utilisation : /alert "numéro du département"'
+    error_02: str = 'Exemple : /alert 69'
+
+    # Gestion des arguments de l'utilisateur
+    if len(context.args) == 1:
+        departement = context.args[0]
+    else:
+        context.bot.send_message(chat_id=update.effective_chat.id, text=error_01)
+        context.bot.send_message(chat_id=update.effective_chat.id, text=error_02)
+        error = True
+        return 0
+
+    ## Get and print alerts
+    my_alert = meteofrance_class.get_alert(departement)
+    message = str(my_alert)
+
+    context.bot.send_message(chat_id=update.effective_chat.id, text=message)
 
 def unknown(update: Update, context: CallbackContext):
     message_01 = 'Désolé, je n\'ai pas compris cette commande'
@@ -136,6 +156,7 @@ def main():
     ## Listening to commands ##
     start_handler = CommandHandler('start', start)
     meteo_handler = CommandHandler('meteo', meteo)
+    alert_handler = CommandHandler('alert', alert)
     echo_handler = MessageHandler(Filters.text & (~Filters.command), echo)
     unknown_handler = MessageHandler(Filters.command, unknown)
     ## Listening to commands ##
@@ -143,6 +164,7 @@ def main():
     ## Add command to the dispatcher ##
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(meteo_handler)
+    dispatcher.add_handler(alert_handler)
     dispatcher.add_handler(echo_handler)
     dispatcher.add_handler(unknown_handler)
     ## Add command to the dispatcher ##

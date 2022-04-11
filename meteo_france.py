@@ -69,6 +69,21 @@ class MeteoFrance:
 
         return my_forecast
 
+    def get_alert(self, departement):
+        # Variables
+        my_alert: dict(str) = []
+
+        # Get alert
+        try:
+            my_alert = self.meteo.get_warning_full(departement)
+        except:
+            print(f'Echec de la récupération des alertes pour le départment {departement}')
+            return 0
+        else:
+            for description in my_alert.raw_data["comments"]["text_bloc_item"]:
+                print(f'\nRésultat: {description["text"]}')
+
+        return my_alert
 
 # def main():
 #     # Variables
