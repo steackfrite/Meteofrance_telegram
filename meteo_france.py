@@ -9,14 +9,14 @@ class MeteoFrance:
 
     def __init__(self):
         # Initialisation de la classe meteofrance
-        self.meteo = meteofrance_api.MeteoFranceClient()
+        self.meteo = MeteoFranceClient()
 
-    def search_city(self, city, self.meteo):
+    def search_city(self, city):
         i = 0
 
         try:
             print(city)
-            cities = meteo.search_places(city)
+            cities = self.meteo.search_places(city)
         except:
             print("Echec de la recherche de ville")
             return 0
@@ -30,7 +30,7 @@ class MeteoFrance:
 
         return cities
 
-    def get_forecast(self, city, meteo, forecast_choice):
+    def get_forecast(self, city, forecast_choice):
         # Variables
         my_forecast = {}
         i = 0
@@ -38,7 +38,7 @@ class MeteoFrance:
         print(f'{city}')
 
         try:
-            my_forecast = meteo.get_forecast_for_place(city)
+            my_forecast = self.meteo.get_forecast_for_place(city)
         except:
             print(f'Echec de la récupération du bulletin météo pour {city}')
             return 0
@@ -66,10 +66,8 @@ class MeteoFrance:
                         print(f'Verglas : {jour["freezing"]}%')
                         print(f'Neige : {jour["snow"]["3h"]}%')
                         i += 1
-                    else:
-                        return 0
 
-        return 0
+        return my_forecast
 
 
 # def main():

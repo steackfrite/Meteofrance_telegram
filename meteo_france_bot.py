@@ -149,5 +149,7 @@ def main():
     updater.start_polling()
     # updater.idle()
 
+## TODO get_warning_current_phenomenoms
+
 if __name__ == '__main__':
     main()
