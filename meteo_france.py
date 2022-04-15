@@ -87,6 +87,7 @@ class MeteoFrance:
 
         return my_alert
 
+
 # def main():
 #     # Variables
 #     cities = []
