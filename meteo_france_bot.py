@@ -129,9 +129,14 @@ def alert(update: Update, context: CallbackContext):
 
     ## Get and print alerts
     my_alert = meteofrance_class.get_alert(departement)
+    print(f'{my_alert["text_bloc_item"]}')
     for alert in my_alert["text_bloc_item"]:
-        for description in alert["text"]:
-            message = description
+        if alert["text"]:
+            for description in alert["text"]:
+                message = description
+                context.bot.send_message(chat_id=update.effective_chat.id, text=message)
+        else:
+            message = "Pas d'alerte en cours"
             context.bot.send_message(chat_id=update.effective_chat.id, text=message)
 
 def unknown(update: Update, context: CallbackContext):
