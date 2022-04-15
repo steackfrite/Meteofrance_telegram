@@ -110,7 +110,6 @@ def meteo(update: Update, context: CallbackContext):
 
                 message += current_day + rain + snow + freeze
         context.bot.send_message(chat_id=update.effective_chat.id, text=message)
-
     ## Get and print forecast ##
 
 def alert(update: Update, context: CallbackContext):
